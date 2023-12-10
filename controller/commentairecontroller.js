@@ -49,7 +49,7 @@ async function addcommentairesocket(data) {
       contenu: data.contenu,
       date_creation: new Date(),
     });
-    console.log("add comment" + JSON.stringify(data));
+    console.log("addcomment" + JSON.stringify(data));
     
     
     await commentaire.save();
