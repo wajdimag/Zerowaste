@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Commentaire</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #comment-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"],
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="comment-form">
+        <label for="titre">Titre:</label>
+        <input id="titre" type="text">
+
+        <label for="contenu">Contenu :</label>
+        <textarea id="contenu" rows="4" cols="50"></textarea>
+
+        <label for="id_aut">ID Auteur :</label>
+        <input id="id_aut" type="text">
+
+        <br>
+
+        <input onclick="envoye()" type="submit">
+        <button onclick="afficher()">Afficher article</button>
+    </div>
+
+    <script>
+        const socket = io.connect();
+
+
+        socket.on("article", (data) => {
+
+            s = document.createElement("p")
+            s.innerHTML = ("<center>" + "titre" + ":" + data.titre + "<br>" + "contenu" + ":" + data.contenu + "<br>" + "id_aut" + ":" + data.id_aut + "</center>")
+            document.body.appendChild(s)
+
+        })
+        socket.on("aff", (data) => {
+            console.log("aff" + JSON.stringify(data))
+            s = document.createElement("p")
+            s.innerHTML = ("<center>" + "titre" + ":" + titre.value + "<br>" + "contenu :" + contenu.value + "<br>" + "auteur_id :" + auteur_id.value + "<br>" + "date de creation :" + date_creation.value +   "</center>")
+            document.body.appendChild(s)
+
+        })
+
+
+
+
+
+        function envoye() {
+            article = {
+                titre: titre.value,
+                contenu: contenu.value,
+                auteur_id: id_aut.value
+            }
+
+            socket.emit("article", article)
+
+        }
+
+        function afficher() {
+            article = {
+                titre: titre.value,
+                contenu: contenu.value,
+                auteur_id: id_aut.value
+            }
+        }
+        console.log("article" + JSON.stringify(article))
+        socket.emit("aff", article)
+    </script>
+</body>
+
+</html>
