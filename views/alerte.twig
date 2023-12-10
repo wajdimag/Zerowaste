@@ -1,0 +1,39 @@
+{% extends "base.twig" %}
+
+{% block title %}Alertes{% endblock %}
+
+{% block content %}
+  <h1>Alertes</h1>
+
+  <hr>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Type d'alerte</th>
+        <th>Message</th>
+        <th>Date</th>
+        <th>Période</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for alerte in alertes %}
+        <tr>
+          <td>{{ alerte.type_alerte }}</td>
+          <td>{{ alerte.message }}</td>
+          <td>{{ alerte.date | date("Y-m-d") }}</td>
+          <td>{{ alerte.periode }}</td>
+          <td>
+            <a href="{{ path('alerte_show', {'id': alerte.id}) }}" class="btn btn-primary">Voir</a>
+            <a href="{{ path('alerte_edit', {'id': alerte.id}) }}" class="btn btn-warning">Modifier</a>
+            <a href="{{ path('alerte_delete', {'id': alerte.id}) }}" class="btn btn-danger">Supprimer</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <a href="{{ path('alerte_create') }}" class="btn btn-success">Créer une alerte</a>
+
+{% endblock %}

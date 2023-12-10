@@ -1,0 +1,30 @@
+{% extends "base.twig" %}
+
+{% block title %}Créer une préférence{% endblock %}
+
+{% block content %}
+  <h1>Créer une préférence</h1>
+
+  <hr>
+
+  <form method="post">
+    <div class="form-group">
+      <label for="notification_frequency">Fréquence de notification:</label>
+      <select class="form-control" id="notification_frequency" name="notification_frequency">
+        <option value="daily">Quotidienne</option>
+        <option value="weekly">Hebdomadaire</option>
+        <option value="monthly">Mensuelle</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="periode_notif">Période de notification:</label>
+      <select class="form-control" id="periode_notif" name="periode_notif">
+        <option value="jour">Jour</option>
+        <option value="semaine">Semaine</option>
+        <option value="mois">Mois</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer</button>
+  </form>
+
+{% endblock %}

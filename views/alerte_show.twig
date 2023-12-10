@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block title %}Voir une alerte{% endblock %}
+
+{% block content %}
+  <h1>Alerte</h1>
+
+  <hr>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Type d'alerte: {{ alerte.type_alerte }}</h5>
+      <p class="card-text">{{ alerte.message }}</p>
+      <p class="card-text">Date: {{ alerte.date | date("Y-m-d") }}</p>
+      <p class="card-text">Période: {{ alerte.periode }}</p>
+      <a href="{{ path('alerte_edit', {'id': alerte.id}) }}" class="btn btn-warning">Modifier</a>
+      <a href="{{ path('alerte_delete', {'id': alerte.id}) }}" class="btn btn-danger">Supprimer</a>
+    </div>
+  </div>
+
+{% endblock %}
