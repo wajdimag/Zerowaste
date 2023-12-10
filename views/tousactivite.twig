@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<style>
+			body {
+				margin: 0;
+				font-family: Arial, sans-serif;
+				background-color: #f4f4f4;
+				display: flex;
+				justify-content: space-between;
+			}
+
+			nav {
+				width: 200px;
+				background-color: #2c3e50;
+				padding: 10px;
+				position: fixed;
+				height: 100%;
+				overflow: auto;
+				display: flex;
+				flex-direction: column;
+				align-items: left;
+			}
+
+			nav a {
+				display: block;
+				color: #ecf0f1;
+				/* Changement de la couleur du texte */
+				padding: 14px 8px;
+				text-decoration: none;
+				transition: background-color 0.3s ease;
+				/* Transition lors du survol */
+			}
+
+			nav a:hover {
+				background-color: #3498db;
+				/* Changement de la couleur de fond au survol */
+			}
+
+			section {
+				margin-left: 220px;
+				padding: 16px;
+				flex-grow: 1;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+
+			table,
+			th,
+			td {
+				border: 1px solid #ddd;
+			}
+
+			th,
+			td {
+				padding: 15px;
+				text-align: left;
+			}
+
+			h2 {
+				color: #2c3e50;
+				/* Changement de la couleur du titre */
+			}
+		</style>
+		<script src="/socket.io/socket.io.js"></script>
+
+	</head>
+
+	<body>
+
+		<section>
+			<h2>Les activités</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Nom activités</th>
+						<th>Compteur Initial</th>
+						<th>Compteur Finale</th>
+						<th>Quantite consommée </th>
+					
+					</tr>
+				</thead>
+				<tbody id="activiteID"></tbody>
+			</table>
+		</section>
+		<script>
+			const socket = io();
+
+socket.on('tous', function (data) {
+console.log('Data received:', data);
+const tbody = document.getElementById('activiteID');
+tbody.innerHTML = ''; // Effacez le contenu actuel du tbody
+if (data !== null && Array.isArray(data)) {
+data.forEach(user => {
+const row = tbody.insertRow();
+const cell1 = row.insertCell(0);
+const cell2 = row.insertCell(1);
+const cell3 = row.insertCell(2);
+const cell4 = row.insertCell(3);
+cell1.textContent = user.nom_activite;
+cell2.textContent = user.compteur_initial;
+cell3.textContent = user.compteur_final;
+cell4.textContent = user.quantite_consomme;
+});
+} else {
+console.error('Invalid data format:', data);
+// Ajoutez ici la logique pour afficher un message d'erreur à l'utilisateur
+}
+});
+
+
+// Émettez l'événement 'aff' pour demander au serveur d'envoyer les données
+socket.emit('tous');
+		</script>
+
+
+	</body>
+
+</html>

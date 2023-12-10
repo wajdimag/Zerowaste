@@ -1,0 +1,43 @@
+<p>salut red devils</p>
+<html>
+
+<head>
+<script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <label>MSG :</label>
+    <input type="text" id="ch" onkeyup="typing()" />
+    <input type="submit" onclick="send()" />
+        
+<script>
+const socket = io.connect(); // ta3ml connexion lel socket
+        name = prompt("votre nom") //bsh ne7lo popup t7ot feha esm ali bsh yconecti
+        socket.emit("msgs", name) //ligne hetha najem na9ra menha eno esm utilisateur ali ena 9a3ed nconecti byh
+        socket.on("typing",(data)=>{ //hne kol 7aref enty tektbo bsh yokhrejlik raho flen is typing 
+            p = document.createElement("p");
+            p.innerText = data;
+            document.body.appendChild(p);
+        })
+        socket.on("msgs", (data) => { //tkharjlik esm utilisateur connecté 
+            p = document.createElement("p");
+            p.innerText = data;
+            document.body.appendChild(p);
+        });
+        socket.on("msg", (data) => { // tkhrajelik esm utilisateur w fsh 9a3ed yekteb 
+            p = document.createElement("p");
+            p.innerText = data;
+            document.body.appendChild(p);
+        });
+        x = document.getElementById("ch"); 
+        function typing() { //hné 3malet appl lel function ali 7atyteha fi west input  
+            socket.emit("typing", name)
+        }
+        function send() { //hné 3malet appl lel function ali 7atyteha fi west input w zid bsh na3ref kol wehed connecte fsh 9a3ed yekteb bethabet w fsh 9a3ed yab3th
+            console.log("message :" + x.value);
+            socket.emit("msg", { object: x.value, name: name });
+        }
+
+
+</script>
+    </body>
+</html>

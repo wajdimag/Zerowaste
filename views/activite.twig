@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Activité</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				background-color: #f4f4f4;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+			}
+
+			form {
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				width: 300px;
+			}
+
+			label {
+				display: block;
+				margin-bottom: 8px;
+			}
+
+			input {
+				width: 100%;
+				padding: 8px;
+				margin-bottom: 16px;
+				box-sizing: border-box;
+			}
+
+			button {
+				background-color: #4caf50;
+				color: #fff;
+				padding: 10px 15px;
+				border: none;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 16px;
+			}
+
+			button:hover {
+				background-color: #45a049;
+			}
+		</style>
+		<script src="/socket.io/socket.io.js"></script>
+
+	</head>
+	<body>
+
+		<form >
+			<label for="nom_activite">Nom Activite :</label>
+			<input type="text" id="nom_activite" name="nom_activite" required>
+			<label for="compteur_initial">Compteur Initial :</label>
+			<input type="text" id="compteur_initial" name="compteur_initial" required>
+
+			<label for="compteur_final">Compteur Final:</label>
+			<input type="text" id="compteur_final" name="compteur_final"  required>
+			<label for="quantite_consomme">Quantite Consomme</label>
+			<input type="text" id="quantite_consomme" name="quantite_consomme" required>
+
+			<button onclick="envoyerEtRediriger(event)" type="submit">Envoyer</button>
+	</form>
+		<script>
+			const socket = io.connect(); 
+
+socket.on("activite", (data) => {
+s = document.createElement("p");
+s.innerText = data;
+document.body.appendChild(s);
+nom_activite = document.getElementById("nom_activite")
+compteur_initial = document.getElementById("compteur_initial")
+compteur_final = document.getElementById("compteur_final")
+quantite_consomme = document.getElementById("adresse")
+
+
+})
+socket.on("nouveauActivite", (data) => {
+            alert('Activite exercée par ' + data.nom_activite + ' a pour un compteur initial : ' +data.compteur_initial+ ' et un compteur final :' +data.compteur_final);
+        });
+function envoyerEtRediriger(event) {
+	  event.preventDefault(); 
+activite = {
+nom_activite: nom_activite.value,
+compteur_initial: compteur_initial.value,
+compteur_final: compteur_final.value,
+quantite_consomme: quantite_consomme.value,
+
+}
+ if (!nom_activite || !compteur_initial || !compteur_final || !quantite_consomme ) {
+          alert("Veuillez remplir tous les champs.");
+          return;
+        }
+
+       
+socket.emit("activite", activite)
+		 window.location.href = "/activite/tousactivite";
+
+}
+		</script>
+	</body>
+</html>
