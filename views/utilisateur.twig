@@ -2,11 +2,49 @@
 
 	<head>
 		 <script src="/socket.io/socket.io.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/yup-browser@0.32.9"></script>
+
 	</head>
 	<body>
-		<label for="usr">Message:</label>
-		<input type="text" id="usr" onkeyup="typing()"/>
-		<button onclick="send()">Send</button>
+		
+		<label for="usr">Username:</label>
+		<input type="text" id="usr" onkeyup="typing()"/> <br>
+		<label for="em" style="margin:13.5px">Email:</label>
+		<input type="text" id="em" onkeyup="typing()"/><br>
+		<label for="pwd" style="margin:2px">Password:</label>
+		<input type="password" id="pwd" onkeyup="typing()"/><br>
+		<button onclick="send()" style="margin:5 0 0 140">Send</button>
+
+		
+		
+    <ul id="userList"></ul>
+
+  <script>
+    const socket = io();
+
+    function send() {
+      const username = document.getElementById('usr').value;
+      const email = document.getElementById('em').value;
+      const password = document.getElementById('pwd').value;
+
+      // Emit an 'addUser' event to the server
+      socket.emit('addUser', { username, email, password });
+    }
+
+    // Handle 'addUser' event from the server
+    socket.on('addUser', (user) => {
+      console.log('User added:', user);
+
+      // Handle the new user data as needed on the client side
+      const userListElement = document.getElementById('userList');
+      const listItem = document.createElement('li');
+      listItem.textContent = `Username: ${user.username}, Email: ${user.email}`;
+      userListElement.appendChild(listItem);
+    });
+  </script>
+	
+
+
 
 	</body>
 </html>
